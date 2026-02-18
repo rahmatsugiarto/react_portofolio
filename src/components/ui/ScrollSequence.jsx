@@ -116,7 +116,7 @@ const ScrollSequence = ({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: "+=1000%", // Balanced duration
+                end: "+=400%", // Shortened duration (faster)
                 scrub: 0, // Instant scrubbing to prevent lag/skipping on fast scrolls
                 pin: true,
             },
