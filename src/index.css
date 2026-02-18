@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+/* Custom Cursor Placeholder - will be handled by GSAP component, but hiding default cursor if needed later */
+/* body { cursor: none; } */
+
+/* Custom Global Styles */
+body {
+  @apply bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 font-body transition-colors duration-500 selection:bg-primary selection:text-white antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-display tracking-tight;
+}
+
+/* Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-800 rounded-full hover:bg-primary;
+}
+
+/* Utilities */
+.glass-panel {
+  @apply bg-white/70 dark:bg-[#121212]/70 backdrop-blur-xl border border-white/20 dark:border-white/5 transition-all duration-300;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.clip-text-image {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
