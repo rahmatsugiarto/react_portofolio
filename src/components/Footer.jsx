@@ -12,7 +12,7 @@ const Footer = () => {
                     </h2>
                     <Magnetic>
                          <a 
-                            href="mailto:contact@rahmat.dev"
+                            href="mailto:sugiartorahmat187@gmail.com"
                             className="bg-primary text-white w-32 h-32 rounded-full flex items-center justify-center font-bold text-sm tracking-widest hover:scale-110 transition-transform duration-300"
                         >
                             EMAIL ME
@@ -26,14 +26,14 @@ const Footer = () => {
                     </p>
                     <div className="flex gap-8">
                         <Magnetic>
-                            <a href="#" className="text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">LinkedIn</a>
+                            <a href="https://www.linkedin.com/in/rahmat-sugiarto/" target="_blank" rel="noopener noreferrer" className="text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">LinkedIn</a>
                         </Magnetic>
                         <Magnetic>
-                            <a href="#" className="text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">Github</a>
+                            <a href="https://github.com/rahmatsugiarto" target="_blank" rel="noopener noreferrer" className="text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">Github</a>
                         </Magnetic>
-                        <Magnetic>
+                        {/* <Magnetic>
                             <a href="#" className="text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">Instagram</a>
-                        </Magnetic>
+                        </Magnetic> */}
                     </div>
                 </div>
             </div>
