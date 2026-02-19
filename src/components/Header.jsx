@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import Magnetic from './ui/Magnetic';
@@ -8,6 +9,9 @@ const Header = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isMenuRendered, setIsMenuRendered] = useState(false);
     const menuRef = useRef(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const isHome = location.pathname === '/';
     
     // Theme state
     const [isDark, setIsDark] = useState(() => {
@@ -50,15 +54,39 @@ const Header = () => {
         }
     };
 
+    const handleScrollTo = React.useCallback((id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+        
+        if (!isHome) {
+            navigate('/', { state: { scrollTo: id } });
+            return;
+        }
+
+        setTimeout(() => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+    }, [isHome, navigate]);
+
     const scrollToSection = (id) => {
         setIsOpen(false);
-        setTimeout(() => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }, 300);
+        handleScrollTo(id);
     };
+
+    // Handle scroll from navigation state
+    useEffect(() => {
+        if (isHome && location.state && location.state.scrollTo) {
+            handleScrollTo(location.state.scrollTo);
+            // Clear state
+            window.history.replaceState({}, document.title);
+        }
+    }, [isHome, location.state, handleScrollTo]);
 
     useGSAP(() => {
         if (isMenuRendered && menuRef.current) {
@@ -92,7 +120,7 @@ const Header = () => {
                     
                     {/* Logo */}
                     <Magnetic>
-                        <div className="cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        <div className="cursor-pointer" onClick={() => isHome ? window.scrollTo({ top: 0, behavior: 'smooth' }) : navigate('/')}>
                             <div className="flex items-center gap-2">
                                 <div className="w-3 h-3 bg-white rounded-full"></div>
                                 <span className="text-lg font-bold tracking-tighter">RAHMAT</span>
@@ -102,7 +130,7 @@ const Header = () => {
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-8">
-                        {navItems.map((item) => (
+                        {isHome && navItems.map((item) => (
                             <Magnetic key={item.name}>
                                 <button
                                     onClick={() => scrollToSection(item.id)}
@@ -150,7 +178,7 @@ const Header = () => {
                     className="md:hidden overflow-hidden bg-black text-white px-6"
                 >
                     <div className="flex flex-col space-y-6 py-10">
-                        {navItems.map((item) => (
+                        {isHome && navItems.map((item) => (
                             <button
                                 key={item.name}
                                 onClick={() => scrollToSection(item.id)}
