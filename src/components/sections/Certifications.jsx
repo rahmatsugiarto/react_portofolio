@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { certifications } from '../../data/certifications';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,32 +29,7 @@ const Certifications = () => {
         });
     }, { scope: containerRef });
 
-    const certs = [
-        {
-            title: 'Back-End Developer Program',
-            issuer: 'IDCamp 2024',
-            year: '2024',
-            level: 'High Level',
-            icon: 'code',
-            colorClass: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-        },
-        {
-            title: 'Google UX Design Professional',
-            issuer: 'Google Career Certificates',
-            year: 'Coursera', // Based on HTML value
-            level: 'Professional',
-            icon: 'design_services',
-            colorClass: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
-        },
-        {
-            title: 'Flutter Developer Expert',
-            issuer: 'Dicoding Indonesia',
-            year: 'Expert', // Based on HTML value
-            level: 'Specialization',
-            icon: 'flutter_dash',
-            colorClass: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400'
-        }
-    ];
+    const displayedCerts = certifications.slice(0, 3);
 
     return (
         <section id="certifications" ref={containerRef} className="py-24 relative bg-gray-50 dark:bg-background-dark">
@@ -63,14 +40,21 @@ const Certifications = () => {
             
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-                    <div className="w-full md:w-auto text-center md:text-left">
+                    <div className="w-full md:w-auto text-center md:text-left mb-6 md:mb-0">
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Key Certifications</h2>
                         <div className="h-1 w-20 bg-primary mt-4 rounded-full mx-auto md:mx-0"></div>
                     </div>
+                    <Link 
+                        to="/certifications" 
+                        className="hidden md:inline-flex items-center text-primary hover:text-primary-dark font-medium group transition-colors"
+                    >
+                        See More
+                        <span className="material-icons-round ml-1 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </Link>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {certs.map((cert, index) => (
+                    {displayedCerts.map((cert, index) => (
                         <div 
                             key={index}
                             className="cert-card group bg-white dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 flex flex-col h-full hover:-translate-y-1"
@@ -89,6 +73,16 @@ const Certifications = () => {
                             </div>
                         </div>
                     ))}
+                </div>
+
+                <div className="mt-8 text-center md:hidden">
+                    <Link 
+                        to="/certifications" 
+                        className="inline-flex items-center text-primary hover:text-primary-dark font-medium group transition-colors"
+                    >
+                        See More
+                        <span className="material-icons-round ml-1 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </Link>
                 </div>
             </div>
         </section>
