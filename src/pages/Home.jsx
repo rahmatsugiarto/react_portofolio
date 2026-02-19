@@ -73,7 +73,7 @@ const Home = () => {
             <div ref={heroRef} className="relative">
                 <ScrollSequence 
                     folderPath="/sequence"
-                    frameCount={192}
+                    frameCount={240}
                     imagePrefix="frame_"
                     imageSuffix=".jpg"
                     padZeros={4}

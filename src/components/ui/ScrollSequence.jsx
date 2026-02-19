@@ -7,10 +7,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ScrollSequence = ({ 
     folderPath = '/sequence', 
-    frameCount = 192, 
+    frameCount = 240, 
     imagePrefix = 'frame_', 
     imageSuffix = '.jpg', 
-    padZeros = 3,
+    padZeros = 4,
     children
 }) => {
     const canvasRef = useRef(null);
