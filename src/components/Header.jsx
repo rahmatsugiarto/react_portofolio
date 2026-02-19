@@ -114,7 +114,7 @@ const Header = () => {
     ];
 
     return (
-        <nav className={`fixed w-full z-50 top-0 transition-all duration-500 ${scrolled ? 'py-4' : 'py-6'} mix-blend-difference text-white`}>
+        <nav className={`fixed w-full z-50 top-0 transition-all duration-500 ${scrolled ? 'py-4' : 'py-6'} text-gray-900 dark:text-white`}>
             <div className="max-w-7xl mx-auto px-6">
                 <div className={`flex items-center justify-between p-2 rounded-full transition-all duration-300 ${scrolled ? 'bg-white/10 backdrop-blur-md border border-white/10 px-6' : ''}`}>
                     
@@ -122,7 +122,7 @@ const Header = () => {
                     <Magnetic>
                         <div className="cursor-pointer" onClick={() => isHome ? window.scrollTo({ top: 0, behavior: 'smooth' }) : navigate('/')}>
                             <div className="flex items-center gap-2">
-                                <div className="w-3 h-3 bg-white rounded-full"></div>
+                                <div className="w-3 h-3 bg-gray-900 dark:bg-white rounded-full"></div>
                                 <span className="text-lg font-bold tracking-tighter">RAHMAT</span>
                             </div>
                         </div>
@@ -137,12 +137,12 @@ const Header = () => {
                                     className="text-sm font-medium hover:text-gray-300 transition-colors relative group"
                                 >
                                     {item.name}
-                                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+                                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 dark:bg-white transition-all duration-300 group-hover:w-full"></span>
                                 </button>
                             </Magnetic>
                         ))}
                         
-                        <div className="w-px h-4 bg-white/20"></div>
+                        <div className="w-px h-4 bg-gray-300 dark:bg-white/20"></div>
 
                         <Magnetic>
                             <button onClick={toggleTheme} className="p-2 hover:text-gray-300 transition-colors">

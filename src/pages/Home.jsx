@@ -82,21 +82,21 @@ const Home = () => {
                         
                         <div className="max-w-7xl mx-auto w-full">
                             <div className="mb-2 overflow-hidden">
-                                <span className="hero-subtitle inline-block text-sm md:text-base font-medium text-primary tracking-widest uppercase mb-4">
+                                <span className="hero-subtitle inline-block text-sm md:text-base font-medium text-primary dark:text-blue-400 tracking-widest uppercase mb-4 transition-colors duration-500">
                                     Mobile Developer
                                 </span>
                             </div>
 
-                            <h1 className="text-[14vw] md:text-[11vw] leading-[0.85] font-bold tracking-tighter text-gray-900 mb-8 whitespace-nowrap">
+                            <h1 className="text-[14vw] md:text-[11vw] leading-[0.85] font-bold tracking-tighter text-gray-900 dark:text-white mb-8 whitespace-nowrap transition-colors duration-500">
                                 <div className="overflow-hidden">
                                     {splitText("RAHMAT")}
                                 </div>
-                                <div className="overflow-hidden text-gray-400">
+                                <div className="overflow-hidden text-gray-400 dark:text-gray-400">
                                     {splitText("SUGIARTO")}
                                 </div>
                             </h1>
 
-                            <div className="hero-subtitle max-w-xl text-lg md:text-xl text-gray-600 leading-relaxed text-balance">
+                            <div className="hero-subtitle max-w-xl text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed text-balance transition-colors duration-500">
                                 Crafting intuitive and scalable mobile experiences with Flutter & Android. Based in Indonesia.
                             </div>
 
@@ -111,7 +111,7 @@ const Home = () => {
                                             href={social.href} 
                                             target={social.label !== 'Email' ? "_blank" : undefined}
                                             rel={social.label !== 'Email' ? "noopener noreferrer" : undefined}
-                                            className="hero-social w-14 h-14 flex items-center justify-center rounded-full border border-gray-900 text-gray-900 hover:bg-black hover:text-white transition-colors duration-300"
+                                            className="hero-social w-14 h-14 flex items-center justify-center rounded-full border border-gray-900 text-gray-900 dark:border-white dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300"
                                             aria-label={social.label}
                                         >
                                             {typeof social.icon === 'string' ? <span className="material-icons-round">{social.icon}</span> : social.icon}

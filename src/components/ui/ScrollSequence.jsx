@@ -130,8 +130,8 @@ const ScrollSequence = ({
     }, { scope: containerRef });
 
     return (
-        <div ref={containerRef} className="relative w-full h-screen bg-white">
-            <canvas ref={canvasRef} className="block mx-auto max-w-full max-h-full" />
+        <div ref={containerRef} className="relative w-full h-screen bg-background-light dark:bg-background-dark transition-colors duration-500">
+            <canvas ref={canvasRef} className="block mx-auto max-w-full max-h-full dark:opacity-40 dark:brightness-90 transition-all duration-500" />
             
             {/* Hero specific content (or any children) */}
             <div className="absolute inset-0 z-20 pointer-events-none flex flex-col justify-center">
@@ -144,7 +144,7 @@ const ScrollSequence = ({
                     <h2 
                         key={index}
                         ref={el => textRefs.current[index] = el}
-                        className="absolute text-5xl md:text-7xl font-bold text-gray-900 tracking-tighter text-left max-w-4xl"
+                        className="absolute text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl transition-colors duration-500"
                         style={{ opacity: 0, transform: 'translateY(20px)' }}
                     >
                         {seq.text}
