@@ -66,11 +66,11 @@ const Skills = () => {
                 </div>
             </div>
 
-            <style jsx>{`
+            <style>{`
                 .stroke-text {
                     -webkit-text-stroke: 1px rgba(156, 163, 175, 0.5);
                 }
-                :global(.dark) .stroke-text {
+                .dark .stroke-text {
                     -webkit-text-stroke: 1px rgba(75, 85, 99, 0.5);
                 }
             `}</style>
