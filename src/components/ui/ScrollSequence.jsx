@@ -30,201 +30,136 @@ const ScrollSequence = ({
 
     useGSAP(() => {
         const canvas = canvasRef.current;
-        const context = canvas.getContext("2d");
-        const frames = { current: 0 };
+        const context = canvas.getContext("2d", { alpha: false }); // Optimize canvas for opaque images
+        
+        // 1. Preload Images simply
         const images = [];
-
-        // Helper to manually update DOM to avoid React render cycle overhead on 60fps loop
-        const updateTextVisibility = (currentFrame) => {
-            textRefs.current.forEach((el, i) => {
-                if (!el) return;
-                
-                const seq = textSequences[i];
-                // Use a wider fade for smoother visual appearance
-                const fadeFrames = 8; 
-                let opacity = 0;
-                let translateY = 20;
-                let isVisible = false;
-
-                // Calculate opacity based on frame position (scrubbing effect)
-                if (currentFrame >= seq.start && currentFrame <= seq.end) {
-                    isVisible = true;
-                    if (currentFrame < seq.start + fadeFrames) {
-                        // Fading in
-                        const progress = (currentFrame - seq.start) / fadeFrames;
-                        opacity = progress;
-                        translateY = 20 * (1 - progress);
-                    } else if (currentFrame > seq.end - fadeFrames && i !== textSequences.length - 1) {
-                        // Fading out (except for the last one)
-                        const progress = (seq.end - currentFrame) / fadeFrames;
-                        opacity = progress;
-                        translateY = -20 * (1 - progress);
-                    } else {
-                        // Fully visible
-                        opacity = 1;
-                        translateY = 0;
-                    }
-                }
-
-                // Optimization: completely detach from layout calculus if not visible
-                if (!isVisible) {
-                    if (el.dataset.v !== 'hidden') {
-                        el.style.display = 'none';
-                        el.dataset.v = 'hidden';
-                    }
-                    return;
-                }
-
-                if (el.dataset.v !== 'visible') {
-                    el.style.display = 'block';
-                    el.dataset.v = 'visible';
-                }
-
-                // Format values for string comparison
-                const newOpacity = opacity.toFixed(2);
-                const newTransform = `translate3d(0px, ${translateY.toFixed(1)}px, 0px)`;
-
-                // Apply styles directly only if they changed to prevent layout thrashing
-                if (el.dataset.o !== newOpacity) {
-                    el.style.opacity = newOpacity;
-                    el.dataset.o = newOpacity;
-                }
-                
-                if (el.dataset.t !== newTransform) {
-                     el.style.transform = newTransform;
-                     el.dataset.t = newTransform;
-                }
-            });
-        };
-
-        // Preload images
         for (let i = 1; i <= frameCount; i++) {
             const img = new Image();
-            const formattedIndex = String(i).padStart(padZeros, '0');
-            img.src = `${folderPath}/${imagePrefix}${formattedIndex}${imageSuffix}`;
-            img.onerror = () => console.error(`Failed to load image: ${img.src}`);
+            const paddedIndex = String(i).padStart(padZeros, '0');
+            img.src = `${folderPath}/${imagePrefix}${paddedIndex}${imageSuffix}`;
             images.push(img);
         }
 
-        let renderParams = null;
-        let lastRenderedFrame = -1;
+        // 2. Simple Render Function
+        const renderFrame = (index) => {
+            const img = images[index];
+            if (!img || !img.complete || img.naturalHeight === 0) return;
 
-        let renderAnimFrame = null;
+            // Simple scaling to fill screen
+            const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+            const x = (canvas.width / 2) - (img.width / 2) * scale;
+            const y = (canvas.height / 2) - (img.height / 2) * scale;
 
-        function render() {
-            if (renderAnimFrame) cancelAnimationFrame(renderAnimFrame);
-
-            renderAnimFrame = requestAnimationFrame(() => {
-                const frameIndex = Math.round(frames.current);
-                // Skip re-rendering the exact same frame again
-                if (frameIndex === lastRenderedFrame && renderParams) return;
-                
-                const img = images[frameIndex];
-                if (!img) return;
-
-                // Cache layout parameters to avoid recalculating every frame
-                if (!renderParams || renderParams.img !== img) {
-                    const hRatio = canvas.width / img.width;
-                    const vRatio = canvas.height / img.height;
-                    const ratio = Math.max(hRatio, vRatio);
-                    const centerShift_x = (canvas.width - img.width * ratio) / 2;
-                    const centerShift_y = (canvas.height - img.height * ratio) / 2;
-                    renderParams = { ratio, centerShift_x, centerShift_y, img };
-                }
-
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(
-                    img, 
-                    0, 0, img.width, img.height,
-                    renderParams.centerShift_x, renderParams.centerShift_y, 
-                    img.width * renderParams.ratio, img.height * renderParams.ratio
-                );
-
-                lastRenderedFrame = frameIndex;
-
-                // Determine active text based on current frame
-                updateTextVisibility(frameIndex);
-            });
-        }
-
-        const resizeCanvas = () => {
-             // Sacrifice internal resolution for a massive performance boost.
-             // Rendering at 40-60% resolution drastically reduces pixel calculations per frame.
-             const qualityScale = window.innerWidth <= 768 ? 0.4 : 0.6; 
-             canvas.width = window.innerWidth * qualityScale;
-             canvas.height = window.innerHeight * qualityScale;
-             
-             // Optimize image rendering strategy
-             context.imageSmoothingEnabled = true;
-             context.imageSmoothingQuality = "low";
-
-             renderParams = null; // Force recalculation
-             lastRenderedFrame = -1; // Force re-render
-             render();
+            context.drawImage(img, x, y, img.width * scale, img.height * scale);
         };
-        window.addEventListener("resize", resizeCanvas);
-        resizeCanvas();
 
+        // 3. Application State & Resize handler
+        const frames = { current: 0 };
+
+        const handleResize = () => {
+             // Use full resolution for crispness, modern devices can handle it if we don't over-engineer JS
+             canvas.width = window.innerWidth;
+             canvas.height = window.innerHeight;
+             renderFrame(Math.round(frames.current));
+        };
+        window.addEventListener("resize", handleResize);
+        handleResize();
+
+        // Ensure first frame renders
         if (images.length > 0) {
-            images[0].onload = render;
+            images[0].onload = () => renderFrame(0);
         }
 
-        gsap.to(frames, {
-            current: frameCount - 1,
-            snap: "current",
-            ease: "none",
+        // 4. Create a single, clean GSAP Timeline for EVERYTHING
+        const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: "+=400%", // Shortened duration (faster)
-                scrub: 1.2, // Further increase scrub to smooth out trackpad inertia completely
+                end: "+=400%",
+                scrub: 0.5, // 0.5 is the golden ratio for smoothing out trackpads without feeling sluggish
                 pin: true,
-                fastScrollEnd: true,
-                preventOverlaps: true,
-                anticipatePin: 1, // Helps with trackpad pin shudder
-            },
-            onUpdate: render
+            }
+        });
+
+        // Add the canvas sequence animation to the timeline
+        tl.to(frames, {
+            current: frameCount - 1,
+            snap: "current",
+            ease: "none",
+            onUpdate: () => renderFrame(Math.round(frames.current))
+        }, 0); // Start at timeline 0
+
+        // 5. Add text animations declaratively to the same timeline 
+        // No more manual math or React layout thrashing!
+        textRefs.current.forEach((el, index) => {
+            if (!el) return;
+            const seq = textSequences[index];
+            
+            // Calculate relative times (0 to 1) based on frame counts
+            const startTime = seq.start / frameCount;
+            const endTime = seq.end / frameCount;
+            const fadeTime = 10 / frameCount; // 10 frames of fade
+
+            // Initialize position
+            gsap.set(el, { opacity: 0, y: 30, display: 'none' });
+
+            // Animate In
+            tl.to(el, {
+                opacity: 1,
+                y: 0,
+                display: 'block',
+                duration: fadeTime,
+                ease: "power1.out"
+            }, startTime);
+
+            // Animate Out (unless it's the last text item)
+            if (index < textSequences.length - 1) {
+                tl.to(el, {
+                    opacity: 0,
+                    y: -30,
+                    display: 'none',
+                    duration: fadeTime,
+                    ease: "power1.in"
+                }, endTime - fadeTime);
+            }
         });
 
         return () => {
-             if (renderAnimFrame) cancelAnimationFrame(renderAnimFrame);
-            window.removeEventListener("resize", resizeCanvas);
+            window.removeEventListener("resize", handleResize);
+            tl.kill(); // Cleanup timeline
         };
 
     }, { scope: containerRef });
 
     return (
-        <div ref={containerRef} className="relative w-full h-screen bg-background-light dark:bg-background-dark transition-colors duration-500 overflow-hidden">
-            {/* 
-                Canvas uses w-full h-full to stretch the lower-res internal render up to the screen size. 
-                Removed expensive CSS filters (`dark:brightness`, `transition-all`) from this element because changing effects on a repainting canvas is extremely CPU/GPU heavy.
-            */}
+        <div ref={containerRef} className="relative w-full h-screen bg-background-light dark:bg-background-dark overflow-hidden transition-colors duration-500">
+            
+            {/* 1. Canvas at bottom */}
             <canvas 
                 ref={canvasRef} 
                 className="absolute inset-0 w-full h-full pointer-events-none" 
-                style={{ willChange: 'contents' }}
             />
             
-            {/* Extremely lightweight dark mode overlay rather than filtering the actively animating canvas */}
-            <div className="absolute inset-0 bg-transparent dark:bg-black/60 pointer-events-none z-0" />
+            {/* 2. Static Dark Overlay (Only visible in dark mode to dim the bright images) */}
+            <div className="absolute inset-0 bg-transparent dark:bg-black/40 pointer-events-none z-0 transition-colors duration-500" />
 
-            {/* Hero specific content (or any children) */}
-            <div className="absolute inset-0 z-20 pointer-events-none flex flex-col justify-center">
-                {children}
-            </div>
-
-            {/* Scroll Sequence Text Overlays */}
+            {/* 3. Text Overlays */}
             <div className="absolute inset-0 flex items-center justify-start z-10 pointer-events-none pl-8 md:pl-24">
                 {textSequences.map((seq, index) => (
                     <h2 
                         key={index}
                         ref={el => textRefs.current[index] = el}
-                        className="absolute text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl"
-                        style={{ display: 'none', opacity: 0, transform: 'translate3d(0px, 20px, 0px)', willChange: 'opacity, transform' }}
+                        className="absolute text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl transition-colors duration-500"
                     >
                         {seq.text}
                     </h2>
                 ))}
+            </div>
+            
+            {/* 4. Other Children */}
+            <div className="absolute inset-0 z-20 pointer-events-none flex flex-col justify-center">
+                {children}
             </div>
         </div>
     );
