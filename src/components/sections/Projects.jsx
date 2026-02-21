@@ -44,7 +44,7 @@ const Projects = () => {
                 <div ref={sectionRef} className="h-screen w-[400vw] flex flex-row relative">
                     
                     {displayedProjects.map((project, index) => (
-                        <div key={index} className="w-screen h-screen flex flex-col md:flex-row justify-center items-center px-4 md:px-20 gap-8 md:gap-20">
+                        <div key={index} className="w-screen h-screen flex flex-col md:flex-row justify-center items-center px-4 md:px-20 gap-8 md:gap-20 relative">
                             
                             <div className="w-full md:w-1/3 flex flex-col justify-center order-2 md:order-1">
                                 <span className="text-primary font-bold tracking-widest text-sm mb-4 block">{project.category} — {project.year}</span>
