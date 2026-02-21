@@ -5,6 +5,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Normalize scroll to help with trackpad high-frequency events
+ScrollTrigger.normalizeScroll(true);
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 const ScrollSequence = ({ 
     folderPath = '/sequence', 
     frameCount = 240, 
@@ -36,13 +40,15 @@ const ScrollSequence = ({
                 if (!el) return;
                 
                 const seq = textSequences[i];
-                // Sharper fade for better visibility on fast scrolls
-                const fadeFrames = 5; 
+                // Use a wider fade for smoother visual appearance
+                const fadeFrames = 8; 
                 let opacity = 0;
                 let translateY = 20;
+                let isVisible = false;
 
                 // Calculate opacity based on frame position (scrubbing effect)
                 if (currentFrame >= seq.start && currentFrame <= seq.end) {
+                    isVisible = true;
                     if (currentFrame < seq.start + fadeFrames) {
                         // Fading in
                         const progress = (currentFrame - seq.start) / fadeFrames;
@@ -60,9 +66,34 @@ const ScrollSequence = ({
                     }
                 }
 
-                // Apply styles directly for best performance
-                el.style.opacity = Math.max(0, Math.min(1, opacity));
-                el.style.transform = `translateY(${translateY}px)`;
+                // Optimization: completely detach from layout calculus if not visible
+                if (!isVisible) {
+                    if (el.dataset.v !== 'hidden') {
+                        el.style.display = 'none';
+                        el.dataset.v = 'hidden';
+                    }
+                    return;
+                }
+
+                if (el.dataset.v !== 'visible') {
+                    el.style.display = 'block';
+                    el.dataset.v = 'visible';
+                }
+
+                // Format values for string comparison
+                const newOpacity = opacity.toFixed(2);
+                const newTransform = `translate3d(0px, ${translateY.toFixed(1)}px, 0px)`;
+
+                // Apply styles directly only if they changed to prevent layout thrashing
+                if (el.dataset.o !== newOpacity) {
+                    el.style.opacity = newOpacity;
+                    el.dataset.o = newOpacity;
+                }
+                
+                if (el.dataset.t !== newTransform) {
+                     el.style.transform = newTransform;
+                     el.dataset.t = newTransform;
+                }
             });
         };
 
@@ -75,31 +106,60 @@ const ScrollSequence = ({
             images.push(img);
         }
 
+        let renderParams = null;
+        let lastRenderedFrame = -1;
+
+        let renderAnimFrame = null;
+
         function render() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            const img = images[frames.current];
-            
-            if (img) {
-                const hRatio = canvas.width / img.width;
-                const vRatio = canvas.height / img.height;
-                const ratio = Math.max(hRatio, vRatio);
-                const centerShift_x = (canvas.width - img.width * ratio) / 2;
-                const centerShift_y = (canvas.height - img.height * ratio) / 2;
+            if (renderAnimFrame) cancelAnimationFrame(renderAnimFrame);
+
+            renderAnimFrame = requestAnimationFrame(() => {
+                const frameIndex = Math.round(frames.current);
+                // Skip re-rendering the exact same frame again
+                if (frameIndex === lastRenderedFrame && renderParams) return;
                 
+                const img = images[frameIndex];
+                if (!img) return;
+
+                // Cache layout parameters to avoid recalculating every frame
+                if (!renderParams || renderParams.img !== img) {
+                    const hRatio = canvas.width / img.width;
+                    const vRatio = canvas.height / img.height;
+                    const ratio = Math.max(hRatio, vRatio);
+                    const centerShift_x = (canvas.width - img.width * ratio) / 2;
+                    const centerShift_y = (canvas.height - img.height * ratio) / 2;
+                    renderParams = { ratio, centerShift_x, centerShift_y, img };
+                }
+
+                context.clearRect(0, 0, canvas.width, canvas.height);
                 context.drawImage(
                     img, 
                     0, 0, img.width, img.height,
-                    centerShift_x, centerShift_y, img.width * ratio, img.height * ratio
+                    renderParams.centerShift_x, renderParams.centerShift_y, 
+                    img.width * renderParams.ratio, img.height * renderParams.ratio
                 );
-            }
 
-            // Determine active text based on current frame
-            updateTextVisibility(frames.current);
+                lastRenderedFrame = frameIndex;
+
+                // Determine active text based on current frame
+                updateTextVisibility(frameIndex);
+            });
         }
 
         const resizeCanvas = () => {
-             canvas.width = window.innerWidth;
-             canvas.height = window.innerHeight;
+             // Sacrifice internal resolution for a massive performance boost.
+             // Rendering at 40-60% resolution drastically reduces pixel calculations per frame.
+             const qualityScale = window.innerWidth <= 768 ? 0.4 : 0.6; 
+             canvas.width = window.innerWidth * qualityScale;
+             canvas.height = window.innerHeight * qualityScale;
+             
+             // Optimize image rendering strategy
+             context.imageSmoothingEnabled = true;
+             context.imageSmoothingQuality = "low";
+
+             renderParams = null; // Force recalculation
+             lastRenderedFrame = -1; // Force re-render
              render();
         };
         window.addEventListener("resize", resizeCanvas);
@@ -117,22 +177,37 @@ const ScrollSequence = ({
                 trigger: containerRef.current,
                 start: "top top",
                 end: "+=400%", // Shortened duration (faster)
-                scrub: 0, // Instant scrubbing to prevent lag/skipping on fast scrolls
+                scrub: 1.2, // Further increase scrub to smooth out trackpad inertia completely
                 pin: true,
+                fastScrollEnd: true,
+                preventOverlaps: true,
+                anticipatePin: 1, // Helps with trackpad pin shudder
             },
             onUpdate: render
         });
 
         return () => {
+             if (renderAnimFrame) cancelAnimationFrame(renderAnimFrame);
             window.removeEventListener("resize", resizeCanvas);
         };
 
     }, { scope: containerRef });
 
     return (
-        <div ref={containerRef} className="relative w-full h-screen bg-background-light dark:bg-background-dark transition-colors duration-500">
-            <canvas ref={canvasRef} className="block mx-auto max-w-full max-h-full dark:opacity-40 dark:brightness-90 transition-all duration-500" />
+        <div ref={containerRef} className="relative w-full h-screen bg-background-light dark:bg-background-dark transition-colors duration-500 overflow-hidden">
+            {/* 
+                Canvas uses w-full h-full to stretch the lower-res internal render up to the screen size. 
+                Removed expensive CSS filters (`dark:brightness`, `transition-all`) from this element because changing effects on a repainting canvas is extremely CPU/GPU heavy.
+            */}
+            <canvas 
+                ref={canvasRef} 
+                className="absolute inset-0 w-full h-full pointer-events-none" 
+                style={{ willChange: 'contents' }}
+            />
             
+            {/* Extremely lightweight dark mode overlay rather than filtering the actively animating canvas */}
+            <div className="absolute inset-0 bg-transparent dark:bg-black/60 pointer-events-none z-0" />
+
             {/* Hero specific content (or any children) */}
             <div className="absolute inset-0 z-20 pointer-events-none flex flex-col justify-center">
                 {children}
@@ -144,8 +219,8 @@ const ScrollSequence = ({
                     <h2 
                         key={index}
                         ref={el => textRefs.current[index] = el}
-                        className="absolute text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl transition-colors duration-500"
-                        style={{ opacity: 0, transform: 'translateY(20px)' }}
+                        className="absolute text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl"
+                        style={{ display: 'none', opacity: 0, transform: 'translate3d(0px, 20px, 0px)', willChange: 'opacity, transform' }}
                     >
                         {seq.text}
                     </h2>
