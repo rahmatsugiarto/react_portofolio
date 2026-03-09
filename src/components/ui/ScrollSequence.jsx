@@ -15,6 +15,7 @@ const ScrollSequence = ({
     imagePrefix = 'frame_', 
     imageSuffix = '.jpg', 
     padZeros = 4,
+    sequences = [], // Passed from parent
     children
 }) => {
     const canvasRef = useRef(null);
@@ -23,13 +24,9 @@ const ScrollSequence = ({
     
     const firstFrameSrc = `${folderPath}/${imagePrefix}${String(1).padStart(padZeros, '0')}${imageSuffix}`;
 
-    const textSequences = [
-        { start: 30, end: 80, text: "I Build Mobile Apps." },
-        { start: 90, end: 140, text: "Flutter & Native Android." },
-        { start: 150, end: frameCount, text: "Let's Create Something Amazing." }
-    ];
 
-    const textRefs = useRef([]);
+
+    const sequencesRefs = useRef([]);
 
     useGSAP(() => {
         const canvas = canvasRef.current;
@@ -105,35 +102,36 @@ const ScrollSequence = ({
             onUpdate: () => renderFrame(Math.round(frames.current))
         }, 0); // Start at timeline 0
 
-        // 5. Add text animations declaratively to the same timeline 
-        // No more manual math or React layout thrashing!
-        textRefs.current.forEach((el, index) => {
+        // 5. Add element animations declaratively to the same timeline 
+        sequencesRefs.current.forEach((el, index) => {
             if (!el) return;
-            const seq = textSequences[index];
+            const seq = sequences[index];
             
             // Calculate relative times (0 to 1) based on frame counts
             const startTime = seq.start / frameCount;
             const endTime = seq.end / frameCount;
-            const fadeTime = 10 / frameCount; // 10 frames of fade
+            const fadeTime = 20 / frameCount; // 20 frames of fade for smoother transitions with complex elements
 
-            // Initialize position
-            gsap.set(el, { opacity: 0, y: 30, display: 'none' });
+            // Initialize position. If it starts at 0, it should be fully visible immediately.
+            if (startTime === 0) {
+                gsap.set(el, { autoAlpha: 1, y: 0 });
+            } else {
+                gsap.set(el, { autoAlpha: 0, y: 30 });
 
-            // Animate In
-            tl.to(el, {
-                opacity: 1,
-                y: 0,
-                display: 'block',
-                duration: fadeTime,
-                ease: "power1.out"
-            }, startTime);
-
-            // Animate Out (unless it's the last text item)
-            if (index < textSequences.length - 1) {
+                // Animate In
                 tl.to(el, {
-                    opacity: 0,
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: fadeTime,
+                    ease: "power1.out"
+                }, startTime);
+            }
+
+            // Animate Out (unless it's set to persist or it's the last item and shouldn't fade out)
+            if (!seq.persist) {
+                tl.to(el, {
+                    autoAlpha: 0,
                     y: -30,
-                    display: 'none',
                     duration: fadeTime,
                     ease: "power1.in"
                 }, endTime - fadeTime);
@@ -168,16 +166,16 @@ const ScrollSequence = ({
             {/* 2. Static Dark Overlay (Only visible in dark mode to dim the bright images) */}
             <div className="absolute inset-0 bg-transparent dark:bg-black/40 pointer-events-none z-0 transition-colors duration-500" />
 
-            {/* 3. Text Overlays */}
-            <div className="absolute inset-0 flex items-center justify-start z-10 pointer-events-none pl-8 md:pl-24">
-                {textSequences.map((seq, index) => (
-                    <h2 
+            {/* 3. Sequence Elements */}
+            <div className="absolute inset-0 z-10 pointer-events-none">
+                {sequences.map((seq, index) => (
+                    <div 
                         key={index}
-                        ref={el => textRefs.current[index] = el}
-                        className="absolute text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl transition-colors duration-500"
+                        ref={el => sequencesRefs.current[index] = el}
+                        className={`absolute inset-0 flex flex-col justify-center pointer-events-auto ${seq.className || ''}`}
                     >
-                        {seq.text}
-                    </h2>
+                        {seq.content}
+                    </div>
                 ))}
             </div>
             
