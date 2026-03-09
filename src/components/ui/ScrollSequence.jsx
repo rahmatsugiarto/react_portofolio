@@ -19,6 +19,9 @@ const ScrollSequence = ({
 }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
+    const fallbackImgRef = useRef(null);
+    
+    const firstFrameSrc = `${folderPath}/${imagePrefix}${String(1).padStart(padZeros, '0')}${imageSuffix}`;
 
     const textSequences = [
         { start: 30, end: 80, text: "I Build Mobile Apps." },
@@ -68,7 +71,19 @@ const ScrollSequence = ({
 
         // Ensure first frame renders
         if (images.length > 0) {
-            images[0].onload = () => renderFrame(0);
+            const loadFirstFrame = () => {
+                renderFrame(0);
+                if (fallbackImgRef.current) {
+                    gsap.to(fallbackImgRef.current, { autoAlpha: 0, duration: 0.5, ease: "power1.out" });
+                }
+            };
+            
+            if (images[0].complete) {
+                // In case it's already cached and loaded
+                loadFirstFrame();
+            } else {
+                images[0].onload = loadFirstFrame;
+            }
         }
 
         // 4. Create a single, clean GSAP Timeline for EVERYTHING
@@ -139,6 +154,15 @@ const ScrollSequence = ({
             <canvas 
                 ref={canvasRef} 
                 className="absolute inset-0 w-full h-full pointer-events-none" 
+            />
+
+            {/* 1.5 Fallback First Frame (Covers black canvas until loaded) */}
+            <img 
+                ref={fallbackImgRef}
+                src={firstFrameSrc}
+                alt="sequence fallback"
+                fetchPriority="high"
+                className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
             />
             
             {/* 2. Static Dark Overlay (Only visible in dark mode to dim the bright images) */}
