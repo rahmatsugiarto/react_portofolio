@@ -142,10 +142,10 @@ const Header = () => {
                     
                     {/* Logo */}
                     <Magnetic>
-                        <div className="cursor-pointer" onClick={() => isHome ? window.scrollTo({ top: 0, behavior: 'smooth' }) : navigate('/')}>
+                        <div className="cursor-pointer group" onClick={() => isHome ? window.scrollTo({ top: 0, behavior: 'smooth' }) : navigate('/')}>
                             <div className="flex items-center gap-2">
-                                <div className="w-3 h-3 bg-gray-900 dark:bg-white rounded-full"></div>
-                                <span className="text-lg font-bold tracking-tighter">RAHMAT</span>
+                                <div className="w-3 h-3 bg-gray-900 dark:bg-white rounded-full transition-all duration-300 group-hover:bg-blue-600 dark:group-hover:bg-blue-400 group-hover:scale-110 shadow-sm"></div>
+                                <span className="text-lg font-bold tracking-tighter transition-colors duration-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">RAHMAT</span>
                             </div>
                         </div>
                     </Magnetic>
@@ -156,10 +156,10 @@ const Header = () => {
                             <Magnetic key={item.name}>
                                 <button
                                     onClick={() => scrollToSection(item.id)}
-                                    className="text-sm font-medium transition-colors relative group"
+                                    className="text-sm font-bold transition-colors duration-300 relative group hover:text-blue-600 dark:hover:text-blue-400"
                                 >
                                     {item.name}
-                                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 dark:bg-white transition-all duration-300 group-hover:w-full"></span>
+                                    <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-600 dark:bg-blue-400 transition-all duration-300 group-hover:w-full rounded-full"></span>
                                 </button>
                             </Magnetic>
                         ))}
@@ -167,8 +167,8 @@ const Header = () => {
                         <div className="w-px h-4 bg-gray-300 dark:bg-white/20"></div>
 
                         <Magnetic>
-                            <button onClick={toggleTheme} className="p-2 transition-colors">
-                                <span className="material-icons-round text-lg">
+                            <button onClick={toggleTheme} className="p-2 transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-110">
+                                <span className="material-icons-round text-lg drop-shadow-sm">
                                     {isDark ? 'light_mode' : 'dark_mode'}
                                 </span>
                             </button>
@@ -177,17 +177,16 @@ const Header = () => {
                         <Magnetic>
                             <button 
                                 onClick={() => scrollToSection('contact')} 
-                                className="bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+                                className="bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-blue-600 hover:text-white dark:hover:bg-blue-500 dark:hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 border border-transparent dark:hover:border-blue-400"
                             >
                                 Let's Talk
                             </button>
                         </Magnetic>
                     </div>
 
-                    {/* Mobile Menu Toggle */}
                     <div className="md:hidden">
-                        <button onClick={handleMenuToggle} className="p-2">
-                             <span className="material-icons-round text-2xl">{isOpen ? 'close' : 'menu'}</span>
+                        <button onClick={handleMenuToggle} className="p-2 transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400">
+                             <span className="material-icons-round text-2xl drop-shadow-sm">{isOpen ? 'close' : 'menu'}</span>
                         </button>
                     </div>
                 </div>
@@ -204,14 +203,14 @@ const Header = () => {
                             <button
                                 key={item.name}
                                 onClick={() => scrollToSection(item.id)}
-                                className="text-4xl font-bold tracking-tighter text-left hover:text-gray-400 transition-colors"
+                                className="text-4xl font-extrabold tracking-tighter text-left hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300"
                             >
                                 {item.name}
                             </button>
                         ))}
                          <button
                             onClick={() => scrollToSection('contact')}
-                            className="text-4xl font-bold tracking-tighter text-left text-primary"
+                            className="text-4xl font-extrabold tracking-tighter text-left text-blue-600 dark:text-blue-500 hover:text-blue-400 dark:hover:text-blue-400 transition-colors duration-300"
                         >
                             Let's Talk
                         </button>
