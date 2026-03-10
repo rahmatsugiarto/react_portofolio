@@ -51,7 +51,13 @@ const ProjectsPage = () => {
                 <div className="back-btn">
                     <Magnetic>
                         <button 
-                            onClick={() => navigate('/')}
+                            onClick={() => {
+                                if (window.history.state && window.history.state.idx > 0) {
+                                    navigate(-1);
+                                } else {
+                                    navigate('/');
+                                }
+                            }}
                             className="px-8 py-3 border border-gray-900 dark:border-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
                         >
                             Back Home

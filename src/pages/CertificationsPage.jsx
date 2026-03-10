@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { certifications } from '../data/certifications';
 import Magnetic from '../components/ui/Magnetic';
@@ -7,9 +7,7 @@ import Magnetic from '../components/ui/Magnetic';
 const CertificationsPage = () => {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+
 
     return (
         <div className="pt-32 pb-20 min-h-screen bg-gray-50 dark:bg-background-dark">
@@ -24,7 +22,13 @@ const CertificationsPage = () => {
 
                     <Magnetic>
                         <button 
-                            onClick={() => navigate('/')}
+                            onClick={() => {
+                                if (window.history.state && window.history.state.idx > 0) {
+                                    navigate(-1);
+                                } else {
+                                    navigate('/');
+                                }
+                            }}
                             className="px-8 py-3 border border-gray-900 dark:border-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
                         >
                             Back Home
