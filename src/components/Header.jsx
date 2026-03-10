@@ -156,7 +156,7 @@ const Header = () => {
                             <Magnetic key={item.name}>
                                 <button
                                     onClick={() => scrollToSection(item.id)}
-                                    className="text-sm font-medium hover:text-gray-300 transition-colors relative group"
+                                    className="text-sm font-medium transition-colors relative group"
                                 >
                                     {item.name}
                                     <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 dark:bg-white transition-all duration-300 group-hover:w-full"></span>
@@ -167,7 +167,7 @@ const Header = () => {
                         <div className="w-px h-4 bg-gray-300 dark:bg-white/20"></div>
 
                         <Magnetic>
-                            <button onClick={toggleTheme} className="p-2 hover:text-gray-300 transition-colors">
+                            <button onClick={toggleTheme} className="p-2 transition-colors">
                                 <span className="material-icons-round text-lg">
                                     {isDark ? 'light_mode' : 'dark_mode'}
                                 </span>
@@ -177,7 +177,7 @@ const Header = () => {
                         <Magnetic>
                             <button 
                                 onClick={() => scrollToSection('contact')} 
-                                className="bg-white text-black px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors"
+                                className="bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
                             >
                                 Let's Talk
                             </button>
