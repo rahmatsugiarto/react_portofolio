@@ -16,9 +16,13 @@ const Header = () => {
     // Theme state
     const [isDark, setIsDark] = useState(() => {
         if (typeof window !== 'undefined') {
-            return localStorage.getItem('theme') !== 'light';
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                return savedTheme === 'dark';
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches;
         }
-        return true;
+        return false;
     });
 
     useEffect(() => {
@@ -28,6 +32,24 @@ const Header = () => {
             document.documentElement.classList.remove('dark');
         }
     }, [isDark]);
+
+    // Listen for system theme changes
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = (e) => {
+            if (!localStorage.getItem('theme')) {
+                setIsDark(e.matches);
+            }
+        };
+
+        if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', handleChange);
+            return () => mediaQuery.removeEventListener('change', handleChange);
+        } else {
+            mediaQuery.addListener(handleChange);
+            return () => mediaQuery.removeListener(handleChange);
+        }
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
