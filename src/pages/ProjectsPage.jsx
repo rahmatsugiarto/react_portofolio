@@ -19,6 +19,12 @@ const ProjectsPage = () => {
             delay: 0.2
         });
 
+        tl.from('.back-btn', {
+            y: 20,
+            opacity: 0,
+            duration: 0.8,
+        }, '-=0.6');
+
         tl.from('.project-card', {
             y: 50,
             opacity: 0,
@@ -42,14 +48,16 @@ const ProjectsPage = () => {
                     </p>
                 </div>
 
-                <Magnetic>
-                    <button 
-                        onClick={() => navigate('/')}
-                        className="page-title px-8 py-3 border border-gray-900 dark:border-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
-                    >
-                        Back Home
-                    </button>
-                </Magnetic>
+                <div className="back-btn">
+                    <Magnetic>
+                        <button 
+                            onClick={() => navigate('/')}
+                            className="px-8 py-3 border border-gray-900 dark:border-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+                        >
+                            Back Home
+                        </button>
+                    </Magnetic>
+                </div>
             </div>
 
             {/* Grid */}

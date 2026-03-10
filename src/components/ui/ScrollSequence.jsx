@@ -5,8 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Normalize scroll to help with trackpad high-frequency events
-ScrollTrigger.normalizeScroll(true);
+// Normalize scroll to help with trackpad high-frequency events (Disabled to allow swipe-to-back gestures)
+// ScrollTrigger.normalizeScroll(true);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 const ScrollSequence = ({ 

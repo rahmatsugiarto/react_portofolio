@@ -1,9 +1,12 @@
 
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { certifications } from '../data/certifications';
-import { Link } from 'react-router-dom';
+import Magnetic from '../components/ui/Magnetic';
 
 const CertificationsPage = () => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -11,11 +14,22 @@ const CertificationsPage = () => {
     return (
         <div className="pt-32 pb-20 min-h-screen bg-gray-50 dark:bg-background-dark">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">All Certifications</h1>
-                    <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl">
-                        A comprehensive list of my professional certifications and achievements.
-                    </p>
+                <div className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                    <div>
+                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">All Certifications</h1>
+                        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl">
+                            A comprehensive list of my professional certifications and achievements.
+                        </p>
+                    </div>
+
+                    <Magnetic>
+                        <button 
+                            onClick={() => navigate('/')}
+                            className="px-8 py-3 border border-gray-900 dark:border-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+                        >
+                            Back Home
+                        </button>
+                    </Magnetic>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
