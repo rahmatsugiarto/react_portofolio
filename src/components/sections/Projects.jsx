@@ -64,7 +64,7 @@ const Projects = () => {
                                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
                             </div>
                             
-                            <div className="absolute bottom-10 left-10 md:left-20 text-9xl font-bold text-gray-200 dark:text-gray-800 opacity-20 pointer-events-none z-0">
+                            <div className="absolute bottom-10 left-10 md:left-20 text-9xl font-bold text-gray-300 dark:text-gray-700 opacity-40 pointer-events-none z-0">
                                 0{index + 1}
                             </div>
                         </div>
