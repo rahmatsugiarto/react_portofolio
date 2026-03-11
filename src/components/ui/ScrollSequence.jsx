@@ -56,11 +56,14 @@ const ScrollSequence = ({
 
         // 3. Application State & Resize handler
         const frames = { current: 0 };
+        let lastRenderedFrame = -1;
 
         const handleResize = () => {
              // Use full resolution for crispness, modern devices can handle it if we don't over-engineer JS
              canvas.width = window.innerWidth;
              canvas.height = window.innerHeight;
+             // Force render
+             lastRenderedFrame = -1;
              renderFrame(Math.round(frames.current));
         };
         window.addEventListener("resize", handleResize);
@@ -89,7 +92,7 @@ const ScrollSequence = ({
                 trigger: containerRef.current,
                 start: "top top",
                 end: "+=400%",
-                scrub: 0.5, // 0.5 is the golden ratio for smoothing out trackpads without feeling sluggish
+                scrub: true, // Let Lenis handle the smoothing instead of GSAP lagging behind
                 pin: true,
             }
         });
@@ -99,7 +102,13 @@ const ScrollSequence = ({
             current: frameCount - 1,
             snap: "current",
             ease: "none",
-            onUpdate: () => renderFrame(Math.round(frames.current))
+            onUpdate: () => {
+                const currentFrame = Math.round(frames.current);
+                if (currentFrame !== lastRenderedFrame) {
+                    renderFrame(currentFrame);
+                    lastRenderedFrame = currentFrame;
+                }
+            }
         }, 0); // Start at timeline 0
 
         // 5. Add element animations declaratively to the same timeline 
