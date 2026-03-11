@@ -93,18 +93,12 @@ const Home = () => {
         },
         { 
             start: 30, 
-            end: 80, 
+            end: 100, 
             className: "flex flex-col justify-center px-6 md:px-12 w-full h-screen z-10",
-            content: <h2 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl transition-colors duration-500">I Build Mobile Apps.</h2> 
+            content: <h2 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl transition-colors duration-500">Turning Ideas Into Reality.</h2> 
         },
         { 
-            start: 90, 
-            end: 140, 
-            className: "flex flex-col justify-center px-6 md:px-12 w-full h-screen z-10",
-            content: <h2 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl transition-colors duration-500">Flutter & Native Android.</h2> 
-        },
-        { 
-            start: 150, 
+            start: 110, 
             end: 240, 
             persist: true, 
             className: "flex flex-col justify-center px-6 md:px-12 w-full h-screen z-10",
