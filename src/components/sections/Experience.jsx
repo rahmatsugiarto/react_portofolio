@@ -30,20 +30,20 @@ const Experience = () => {
         {
             role: 'Mobile Developer',
             company: 'TelkomSigma',
-            period: '2022 - Present',
-            description: 'Leading Flutter development for enterprise solutions. Orchestrated CI/CD pipelines reducing deployment time by 40%.',
+            period: 'June 2022 - Present',
+            description: 'Develop and maintain high-quality mobile applications using Flutter (Android & iOS). Collaborate with cross-functional teams to deliver seamless user experiences and drive digital transformation initiatives.',
         },
         {
-            role: 'Android Reviewer',
+            role: 'Learning Facilitator',
             company: 'Dicoding Indonesia',
-            period: '2021 - 2022',
-            description: 'Mentored 500+ students in Android Development. Conducted code reviews and provided technical guidance on Kotlin and Jetpack Compose.',
+            period: 'January 2025 - March 2025',
+            description: 'Facilitated the IDCamp Multi-Platform App (Flutter) Developer Intermediate 2024 program, guiding students through Flutter fundamentals, state management, and mobile application development best practices.',
         },
         {
-            role: 'Mobile Instructor',
+            role: 'Android Development Mentor',
             company: 'UpSkill.id',
-            period: '2020 - 2021',
-            description: 'Designed and taught Flutter curriculum. Facilitated live coding sessions and workshops for aspiring mobile developers.',
+            period: 'March 2022 - June 2022',
+            description: 'Create and deliver comprehensive Android development training programs for students. Provide hands-on guidance, code reviews, and technical support to help students master Kotlin and Android fundamentals.',
         }
     ];
 
