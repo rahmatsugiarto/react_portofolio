@@ -32,13 +32,13 @@ const Education = () => {
                     <div className="education-item">
                         <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Asia Cyber University</h3>
                         <p className="text-lg text-gray-500 dark:text-gray-400 mb-4">Bachelor's in Informatics</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">Present • 7th Semester</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">Graduated in 2026</p>
                     </div>
 
                     <div className="education-item">
                         <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Binar Academy</h3>
-                        <p className="text-lg text-gray-500 dark:text-gray-400 mb-4">Android Engineering Bootcamp</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">Graduated • Top Graduate</p>
+                        <p className="text-lg text-gray-500 dark:text-gray-400 mb-4">Android Engineering Bootcamp (Non Formal Education)</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">Graduated in 2022</p>
                     </div>
                 </div>
             </div>
