@@ -18,7 +18,7 @@ const Certifications = () => {
                 scrollTrigger: {
                     trigger: card,
                     start: 'top 85%',
-                    toggleActions: 'play none none reverse'
+                    once: true
                 },
                 y: 20,
                 opacity: 0,

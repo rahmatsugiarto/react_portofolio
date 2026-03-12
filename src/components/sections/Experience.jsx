@@ -16,7 +16,7 @@ const Experience = () => {
                 scrollTrigger: {
                     trigger: item,
                     start: 'top 90%',
-                    toggleActions: 'play none none reverse'
+                    once: true
                 },
                 y: 50,
                 opacity: 0,
