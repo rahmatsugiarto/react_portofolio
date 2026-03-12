@@ -66,7 +66,7 @@ const Home = () => {
                     </h1>
 
                     <div className="hero-subtitle max-w-xl text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed text-balance transition-colors duration-500">
-                        Crafting intuitive and scalable mobile experiences with Flutter & Android. Based in Indonesia.
+                        Crafting intuitive mobile experiences with Flutter. Based in Indonesia.
                     </div>
 
                     <div className="mt-12 flex gap-6 z-30 pointer-events-auto">
@@ -98,7 +98,7 @@ const Home = () => {
             content: <h2 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tighter text-left max-w-4xl transition-colors duration-500">Turning Ideas Into Reality.</h2> 
         },
         { 
-            start: 110, 
+            start: 105, 
             end: 240, 
             persist: true, 
             className: "flex flex-col justify-center px-6 md:px-12 w-full h-screen z-10",
