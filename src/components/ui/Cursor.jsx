@@ -1,10 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 const Cursor = () => {
     const cursorRef = useRef(null);
     const [isHovering, setIsHovering] = useState(false);
+    const location = useLocation();
+
+    // Reset hover state on route change
+    useEffect(() => {
+        const timer = setTimeout(() => setIsHovering(false), 0);
+        return () => clearTimeout(timer);
+    }, [location.pathname]);
 
     useGSAP(() => {
         const cursor = cursorRef.current;
@@ -16,27 +24,47 @@ const Cursor = () => {
             yTo(e.clientY);
         };
 
-        const onMouseEnter = () => setIsHovering(true);
-        const onMouseLeave = () => setIsHovering(false);
+        const handleMouseOver = (e) => {
+            if (e.target.closest('a, button, .clickable')) {
+                setIsHovering(true);
+            }
+        };
+
+        const handleMouseOut = (e) => {
+            const clickable = e.target.closest('a, button, .clickable');
+            if (clickable) {
+                // If leaving the clickable element entirely
+                if (!e.relatedTarget || !clickable.contains(e.relatedTarget)) {
+                    setIsHovering(false);
+                }
+            }
+        };
+        
+        const handleClick = (e) => {
+            // Re-evaluate hover state after click, in case DOM changed
+            setTimeout(() => {
+                const elUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
+                if (elUnderCursor && elUnderCursor.closest('a, button, .clickable')) {
+                    setIsHovering(true);
+                } else {
+                    setIsHovering(false);
+                }
+            }, 50);
+        };
 
         window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseover', handleMouseOver);
+        window.addEventListener('mouseout', handleMouseOut);
+        window.addEventListener('click', handleClick);
         
-        // Add listeners to clickable elements
-        const clickables = document.querySelectorAll('a, button, .clickable');
-        clickables.forEach(el => {
-            el.addEventListener('mouseenter', onMouseEnter);
-            el.addEventListener('mouseleave', onMouseLeave);
-        });
-
         // Cleanup
         return () => {
             window.removeEventListener('mousemove', onMouseMove);
-            clickables.forEach(el => {
-                el.removeEventListener('mouseenter', onMouseEnter);
-                el.removeEventListener('mouseleave', onMouseLeave);
-            });
+            window.removeEventListener('mouseover', handleMouseOver);
+            window.removeEventListener('mouseout', handleMouseOut);
+            window.removeEventListener('click', handleClick);
         };
-    }, { scope: cursorRef }); // Scope might not be ideal here since listeners are global, but safe
+    }, { scope: cursorRef });
 
     // Effect to handle hover state animation
     useGSAP(() => {
