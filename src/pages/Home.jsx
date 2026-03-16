@@ -51,7 +51,7 @@ const Home = () => {
             content: (
                 <div className="max-w-7xl mx-auto w-full">
                     <div className="mb-2 overflow-hidden">
-                        <span className="hero-subtitle inline-block text-sm md:text-base font-medium text-primary dark:text-blue-400 tracking-widest uppercase mb-4 transition-colors duration-500">
+                        <span className="hero-subtitle inline-block text-sm md:text-base font-medium text-primary dark:text-blue-300 tracking-widest uppercase mb-4 transition-colors duration-500">
                             Mobile Developer
                         </span>
                     </div>
@@ -60,12 +60,12 @@ const Home = () => {
                         <div className="overflow-hidden">
                             {splitText("RAHMAT")}
                         </div>
-                        <div className="overflow-hidden text-gray-400 dark:text-gray-400">
+                        <div className="overflow-hidden text-gray-400 dark:text-gray-300">
                             {splitText("SUGIARTO")}
                         </div>
                     </h1>
 
-                    <div className="hero-subtitle max-w-xl text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed text-balance transition-colors duration-500">
+                    <div className="hero-subtitle max-w-xl text-lg md:text-xl text-gray-600 dark:text-gray-200 leading-relaxed text-balance transition-colors duration-500">
                         Crafting intuitive mobile experiences with Flutter. Based in Indonesia.
                     </div>
 
