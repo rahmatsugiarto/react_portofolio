@@ -5,7 +5,7 @@ export const projects = [
         description: 'Developed a comprehensive mobile biometric e-signature and digital stamping solution from scratch using Flutter. Implemented secure Restful APIs and utilized Bloc for robust state management to ensure a seamless and reliable user experience for Telkomsign.',
         tech: ['Flutter', 'Firebase', 'iOS', 'Android', 'Bloc', 'Restful API'],
         year: '2025',
-        image: '/projects/under_construction.png',
+        image: '/projects/telkomsign.png',
         github: { url: '', isPrivate: true },
         playstore: '',
         appstore: ''
@@ -15,7 +15,7 @@ export const projects = [
         description: 'Created a versatile mobile application suite including digital signature, electronic stamps, and document management systems. Focused on precise design implementation from Figma, performance optimization, and collaborative development within a distributed mobile team.',
         tech: ['Flutter', 'iOS', 'Android', 'Bloc', 'Restful API'],
         year: '2023',
-        image: '/projects/under_construction.png',
+        image: '/projects/dexter.png',
         github: { url: '', isPrivate: true },
         playstore: '',
         appstore: ''
@@ -25,7 +25,7 @@ export const projects = [
         description: 'Modernized the RAPIM TELKOM GROUP application by migrating from native Android/iOS to Flutter. Integrated Firebase Cloud Messaging for critical push notifications and implemented a Clean Architecture with Bloc to manage complex event workflows and data synchronization.',
         tech: ['Flutter', 'Firebase', 'iOS', 'Android', 'Clean Architecture', 'Bloc'],
         year: '2022',
-        image: '/projects/under_construction.png',
+        image: '/projects/rapim.png',
         github: { url: '', isPrivate: true },
         playstore: '',
         appstore: ''
@@ -35,7 +35,7 @@ export const projects = [
         description: 'Successfully migrated an existing CRM mobile framework from React Native to Flutter to improve performance and code maintainability. Applied Clean Architecture principles and Bloc state management to handle complex customer data and relationship workflows efficiently.',
         tech: ['Flutter', 'iOS', 'Android', 'Clean Architecture', 'Bloc'],
         year: '2023',
-        image: '/projects/under_construction.png',
+        image: '/projects/crm.png',
         github: { url: '', isPrivate: true },
         playstore: '',
         appstore: ''
@@ -55,31 +55,31 @@ export const projects = [
         description: 'Built "Temanin", a comprehensive tenant management solution designed to simplify property administration. Implemented complex business logic using Flutter and Bloc, ensuring a smooth user interface based on detailed Figma specifications.',
         tech: ['Flutter', 'iOS', 'Android', 'Clean Architecture', 'Bloc', 'Localization'],
         year: '2023',
-        image: '/projects/under_construction.png',
+        image: '/projects/temanin.png',
         github: { url: '', isPrivate: true },
         playstore: '',
         appstore: ''
     },
-    {
-        title: 'Meterai Elektronik PERURI',
-        description: 'Collaborated on the official PERURI Electronic Stamp application, developing a specialized interface for precise coordinate-based stamp placement. Leveraged Clean Architecture and Bloc to maintain a high-quality, testable codebase for sensitive document processing.',
-        tech: ['Flutter', 'iOS', 'Android', 'Clean Architecture', 'Bloc'],
-        year: '2023',
-        image: '/projects/under_construction.png',
-        github: { url: '', isPrivate: true },
-        playstore: '',
-        appstore: ''
-    },
-    {
-        title: 'Event Management System (RAPIM SP FU)',
-        description: 'Developed a specialized version of the RAPIM application for SP FU, focusing on custom feature sets and efficient API integration. Used Flutter with a Clean Architecture approach and Provider for lightweight, effective state management.',
-        tech: ['Flutter', 'Firebase', 'iOS', 'Android', 'Clean Architecture', 'Provider'],
-        year: '2023',
-        image: '/projects/under_construction.png',
-        github: { url: '', isPrivate: true },
-        playstore: '',
-        appstore: ''
-    },
+    // {
+    //     title: 'Meterai Elektronik PERURI',
+    //     description: 'Collaborated on the official PERURI Electronic Stamp application, developing a specialized interface for precise coordinate-based stamp placement. Leveraged Clean Architecture and Bloc to maintain a high-quality, testable codebase for sensitive document processing.',
+    //     tech: ['Flutter', 'iOS', 'Android', 'Clean Architecture', 'Bloc'],
+    //     year: '2023',
+    //     image: '/projects/under_construction.png',
+    //     github: { url: '', isPrivate: true },
+    //     playstore: '',
+    //     appstore: ''
+    // },
+    // {
+    //     title: 'Event Management System (RAPIM SP FU)',
+    //     description: 'Developed a specialized version of the RAPIM application for SP FU, focusing on custom feature sets and efficient API integration. Used Flutter with a Clean Architecture approach and Provider for lightweight, effective state management.',
+    //     tech: ['Flutter', 'Firebase', 'iOS', 'Android', 'Clean Architecture', 'Provider'],
+    //     year: '2023',
+    //     image: '/projects/under_construction.png',
+    //     github: { url: '', isPrivate: true },
+    //     playstore: '',
+    //     appstore: ''
+    // },
     {
         title: 'Ditonton',
         description: 'An application that displays film and tv series information using the Flutter framework. This project is one of the tasks to get a certificate to Become a Flutter Developer Expert (Dicoding).',
@@ -135,7 +135,7 @@ export const projects = [
         description: 'A native Android multiplayer game developed with Kotlin and MVVM architecture. Features real-time state synchronization using Firebase Realtime Database and interactive push notifications to enhance user engagement.',
         tech: ['Kotlin', 'Android', 'Firebase', 'MVVM'],
         year: '2021',
-        image: '/projects/under_construction.png',
+        image: '/projects/sciroper.png',
         github: { url: 'https://github.com/rahmat/sciroper', isPrivate: false },
         playstore: '',
         appstore: ''
