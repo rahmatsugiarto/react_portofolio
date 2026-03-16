@@ -196,7 +196,7 @@ const Header = () => {
             {isMenuRendered && (
                 <div
                     ref={menuRef}
-                    className="md:hidden overflow-hidden bg-black text-white px-6"
+                    className="md:hidden overflow-hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 shadow-2xl px-6"
                 >
                     <div className="flex flex-col space-y-6 py-10">
                         {isHome && navItems.map((item) => (
