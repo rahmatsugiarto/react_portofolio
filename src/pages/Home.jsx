@@ -17,17 +17,20 @@ const Home = () => {
     const heroRef = useRef(null);
 
     useGSAP(() => {
-        // Initial scroll trigger for parallax or fade out of the container if needed
-        // Since ScrollSequence now handles the internal content, we only need to fade the whole container if desired.
-        gsap.to('.hero-container', {
-            scrollTrigger: {
-                trigger: '.hero-container',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: true
-            },
-            yPercent: 50,
-            opacity: 0
+        let mm = gsap.matchMedia();
+        mm.add("(prefers-reduced-motion: no-preference)", () => {
+            // Initial scroll trigger for parallax or fade out of the container if needed
+            // Since ScrollSequence now handles the internal content, we only need to fade the whole container if desired.
+            gsap.to('.hero-container', {
+                scrollTrigger: {
+                    trigger: '.hero-container',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                },
+                yPercent: 50,
+                opacity: 0
+            });
         });
 
     }, { scope: heroRef });

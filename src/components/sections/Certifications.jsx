@@ -11,20 +11,23 @@ const Certifications = () => {
     const containerRef = useRef(null);
 
     useGSAP(() => {
-        const cards = gsap.utils.toArray('.cert-card');
-        
-        cards.forEach((card, index) => {
-            gsap.from(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 85%',
-                    once: true
-                },
-                y: 20,
-                opacity: 0,
-                duration: 0.5,
-                delay: index * 0.1,
-                ease: 'power3.out'
+        let mm = gsap.matchMedia();
+        mm.add("(prefers-reduced-motion: no-preference)", () => {
+            const cards = gsap.utils.toArray('.cert-card');
+            
+            cards.forEach((card, index) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 85%',
+                        once: true
+                    },
+                    y: 20,
+                    opacity: 0,
+                    duration: 0.5,
+                    delay: index * 0.1,
+                    ease: 'power3.out'
+                });
             });
         });
     }, { scope: containerRef });
@@ -66,7 +69,7 @@ const Certifications = () => {
                             <CardTag 
                                 key={index}
                                 {...cardProps}
-                                className={`cert-card group bg-white dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-300 flex flex-col h-full hover:-translate-y-1 ${cert.link ? 'hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 cursor-pointer' : ''}`}
+                                className={`cert-card group bg-white dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm transition duration-300 flex flex-col h-full hover:-translate-y-1 ${cert.link ? 'hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 cursor-pointer' : ''}`}
                             >
                                 <div className="flex justify-between items-start mb-4">
                                     <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center p-2">
