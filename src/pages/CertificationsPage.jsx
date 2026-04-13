@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { certifications } from '../data/certifications';
 import Magnetic from '../components/ui/Magnetic';
+import { Helmet } from 'react-helmet-async';
 
 const CertificationsPage = () => {
     const navigate = useNavigate();
@@ -16,6 +17,11 @@ const CertificationsPage = () => {
 
     return (
         <div className="pt-32 pb-20 min-h-screen bg-gray-50 dark:bg-background-dark">
+            <Helmet>
+                <title>Certifications | Rahmat Sugiarto</title>
+                <meta name="description" content="A comprehensive list of professional certifications and achievements by Rahmat Sugiarto." />
+                <link rel="canonical" href="https://rahmatsugiarto.vercel.app/certifications" />
+            </Helmet>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                     <div>

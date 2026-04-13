@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import About from '../components/sections/About';
 import Magnetic from '../components/ui/Magnetic';
 import ScrollSequence from '../components/ui/ScrollSequence';
+import { Helmet } from 'react-helmet-async';
 
 const Experience = lazy(() => import('../components/sections/Experience'));
 const Education = lazy(() => import('../components/sections/Education'));
@@ -112,6 +113,12 @@ const Home = () => {
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen">
+            <Helmet>
+                <title>Rahmat Sugiarto | Mobile Developer</title>
+                <meta name="description" content="Portfolio of Rahmat Sugiarto, an experienced Mobile Developer." />
+                <link rel="canonical" href="https://rahmatsugiarto.vercel.app/" />
+            </Helmet>
+
             {/* Hero Section */}
             <div ref={heroRef} className="relative">
                 <ScrollSequence 

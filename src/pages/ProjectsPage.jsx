@@ -6,6 +6,7 @@ import { projects } from '../data/projects';
 import Magnetic from '../components/ui/Magnetic';
 import ImageModal from '../components/ui/ImageModal';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const ProjectsPage = () => {
     const containerRef = useRef(null);
@@ -40,6 +41,11 @@ const ProjectsPage = () => {
 
     return (
         <div ref={containerRef} className="min-h-screen bg-background-light dark:bg-background-dark py-20 px-6 md:px-12">
+            <Helmet>
+                <title>Projects | Rahmat Sugiarto</title>
+                <meta name="description" content="Discover the mobile application projects built by Rahmat Sugiarto." />
+                <link rel="canonical" href="https://rahmatsugiarto.vercel.app/projects" />
+            </Helmet>
             
             {/* Header */}
             <div className="max-w-7xl mx-auto mb-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
