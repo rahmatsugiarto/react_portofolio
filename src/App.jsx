@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useState, useCallback } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import LoadingScreen from './components/ui/LoadingScreen';
@@ -43,6 +44,7 @@ function App() {
         </Suspense>
       </div>
       <SpeedInsights />
+      <Analytics />
     </>
   );
 }
