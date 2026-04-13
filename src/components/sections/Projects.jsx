@@ -28,7 +28,7 @@ const Projects = () => {
                 trigger: triggerRef.current,
                 start: "top top",
                 end: "3000 top", // Increased scroll distance
-                scrub: 0.6,
+                scrub: true,
                 pin: true,
             }
         });

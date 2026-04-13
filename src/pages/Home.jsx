@@ -1,15 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, lazy, Suspense } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import About from '../components/sections/About';
-import Experience from '../components/sections/Experience';
-import Education from '../components/sections/Education';
-import Certifications from '../components/sections/Certifications';
-import Projects from '../components/sections/Projects';
-import Skills from '../components/sections/Skills';
 import Magnetic from '../components/ui/Magnetic';
 import ScrollSequence from '../components/ui/ScrollSequence';
+
+const Experience = lazy(() => import('../components/sections/Experience'));
+const Education = lazy(() => import('../components/sections/Education'));
+const Certifications = lazy(() => import('../components/sections/Certifications'));
+const Projects = lazy(() => import('../components/sections/Projects'));
+const Skills = lazy(() => import('../components/sections/Skills'));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -124,11 +125,13 @@ const Home = () => {
             </div>
 
             <About />
-            <Projects />
-            <Skills />
-            <Experience />
-            <Education />
-            <Certifications />
+            <Suspense fallback={<div className="h-20 w-full flex items-center justify-center">Loading section...</div>}>
+                <Projects />
+                <Skills />
+                <Experience />
+                <Education />
+                <Certifications />
+            </Suspense>
         </div>
     );
 };

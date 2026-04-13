@@ -41,17 +41,27 @@ const ScrollSequence = ({
             images.push(img);
         }
 
+        let cachedScale = 0;
+        let cachedX = 0;
+        let cachedY = 0;
+        let cachedW = 0;
+        let cachedH = 0;
+
         // 2. Simple Render Function
         const renderFrame = (index) => {
             const img = images[index];
             if (!img || !img.complete || img.naturalHeight === 0) return;
 
-            // Simple scaling to fill screen
-            const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
-            const x = (canvas.width / 2) - (img.width / 2) * scale;
-            const y = (canvas.height / 2) - (img.height / 2) * scale;
+            // Compute scaling metrics only once per resize
+            if (cachedScale === 0) {
+                cachedScale = Math.max(canvas.width / img.width, canvas.height / img.height);
+                cachedX = (canvas.width / 2) - (img.width / 2) * cachedScale;
+                cachedY = (canvas.height / 2) - (img.height / 2) * cachedScale;
+                cachedW = img.width * cachedScale;
+                cachedH = img.height * cachedScale;
+            }
 
-            context.drawImage(img, x, y, img.width * scale, img.height * scale);
+            context.drawImage(img, cachedX, cachedY, cachedW, cachedH);
         };
 
         // 3. Application State & Resize handler
@@ -62,6 +72,8 @@ const ScrollSequence = ({
              // Use full resolution for crispness, modern devices can handle it if we don't over-engineer JS
              canvas.width = window.innerWidth;
              canvas.height = window.innerHeight;
+             // Reset cache
+             cachedScale = 0;
              // Force render
              lastRenderedFrame = -1;
              renderFrame(Math.round(frames.current));
@@ -182,6 +194,7 @@ const ScrollSequence = ({
                         key={index}
                         ref={el => sequencesRefs.current[index] = el}
                         className={`absolute inset-0 flex flex-col justify-center pointer-events-auto ${seq.className || ''}`}
+                        style={{ willChange: 'transform, opacity' }}
                     >
                         {seq.content}
                     </div>
