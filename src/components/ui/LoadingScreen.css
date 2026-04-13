@@ -1,0 +1,147 @@
+/* ========================================
+   Loading Screen Styles
+   ======================================== */
+
+.loading-screen {
+    background-color: #FAFAFA;
+}
+
+:is(.dark) .loading-screen {
+    background-color: #050505;
+}
+
+/* Animated gradient background */
+.loading-screen__bg {
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37, 99, 235, 0.08), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(37, 99, 235, 0.05), transparent);
+    animation: loading-bg-shift 4s ease-in-out infinite alternate;
+}
+
+:is(.dark) .loading-screen__bg {
+    background: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37, 99, 235, 0.15), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(37, 99, 235, 0.08), transparent);
+}
+
+@keyframes loading-bg-shift {
+    0% { opacity: 0.5; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Floating Particles */
+.loading-screen__particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.loading-screen__particle {
+    position: absolute;
+    bottom: -10px;
+    left: var(--x);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.3);
+    animation: particle-float 6s ease-in-out infinite;
+    animation-delay: var(--delay);
+}
+
+:is(.dark) .loading-screen__particle {
+    background: rgba(37, 99, 235, 0.4);
+}
+
+@keyframes particle-float {
+    0% {
+        transform: translateY(0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+        transform: translateY(-10vh) scale(1);
+    }
+    90% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-100vh) scale(0.3);
+        opacity: 0;
+    }
+}
+
+/* Logo — size/position set via inline styles to match pre-loader exactly */
+.loading-screen__logo {
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0a;
+    box-shadow: 0 0 30px rgba(37, 99, 235, 0.15);
+}
+
+:is(.dark) .loading-screen__logo {
+    background: #ffffff;
+    box-shadow: 0 0 30px rgba(37, 99, 235, 0.2);
+}
+
+.loading-screen__logo-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    color: #ffffff;
+    line-height: 1;
+    user-select: none;
+}
+
+:is(.dark) .loading-screen__logo-text {
+    color: #0a0a0a;
+}
+
+/* Progress bar */
+.loading-screen__progress-container {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+}
+
+.loading-screen__progress-track {
+    width: 100%;
+    height: 3px;
+    border-radius: 99px;
+    background: rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+:is(.dark) .loading-screen__progress-track {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.loading-screen__progress-bar {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #2563EB, #60a5fa);
+    transition: width 0.3s ease;
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+}
+
+/* Text */
+.loading-screen__text {
+    z-index: 1;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.4);
+    white-space: nowrap;
+}
+
+:is(.dark) .loading-screen__text {
+    color: rgba(255, 255, 255, 0.35);
+}
