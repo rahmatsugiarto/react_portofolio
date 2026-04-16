@@ -184,39 +184,44 @@ const Header = () => {
                         </Magnetic>
                     </div>
 
-                    <div className="md:hidden">
+                    <div className="md:hidden flex items-center gap-2">
+                        <button onClick={toggleTheme} className="p-2 transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400">
+                            <span className="material-icons-round text-xl drop-shadow-sm">
+                                {isDark ? 'light_mode' : 'dark_mode'}
+                            </span>
+                        </button>
                         <button onClick={handleMenuToggle} className="p-2 transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400">
                              <span className="material-icons-round text-2xl drop-shadow-sm">{isOpen ? 'close' : 'menu'}</span>
                         </button>
                     </div>
                 </div>
-            </div>
 
-            {/* Mobile Menu Overlay */}
-            {isMenuRendered && (
-                <div
-                    ref={menuRef}
-                    className="md:hidden overflow-hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 shadow-2xl px-6"
-                >
-                    <div className="flex flex-col space-y-6 py-10">
-                        {isHome && navItems.map((item) => (
-                            <button
-                                key={item.name}
-                                onClick={() => scrollToSection(item.id)}
-                                className="text-4xl font-extrabold tracking-tighter text-left hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300"
+                {/* Mobile Menu Overlay - Now inside the width container */}
+                {isMenuRendered && (
+                    <div
+                        ref={menuRef}
+                        className="md:hidden overflow-hidden bg-white/10 dark:bg-white/5 backdrop-blur-xl text-gray-900 dark:text-white border border-white/20 dark:border-white/10 shadow-2xl px-8 rounded-[2rem] mt-4"
+                    >
+                        <div className="flex flex-col space-y-6 py-10">
+                            {isHome && navItems.map((item) => (
+                                <button
+                                    key={item.name}
+                                    onClick={() => scrollToSection(item.id)}
+                                    className="text-4xl font-extrabold tracking-tighter text-left hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300"
+                                >
+                                    {item.name}
+                                </button>
+                            ))}
+                             <button
+                                onClick={() => scrollToSection('contact')}
+                                className="text-4xl font-extrabold tracking-tighter text-left text-blue-600 dark:text-blue-500 hover:text-blue-400 dark:hover:text-blue-400 transition-colors duration-300"
                             >
-                                {item.name}
+                                Let's Talk
                             </button>
-                        ))}
-                         <button
-                            onClick={() => scrollToSection('contact')}
-                            className="text-4xl font-extrabold tracking-tighter text-left text-blue-600 dark:text-blue-500 hover:text-blue-400 dark:hover:text-blue-400 transition-colors duration-300"
-                        >
-                            Let's Talk
-                        </button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </nav>
     );
 };
