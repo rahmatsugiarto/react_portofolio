@@ -23,7 +23,7 @@ export const certifications = [
     {
         title: 'Google UX Design',
         issuer: 'Google',
-        year: 'November 2024',
+        year: 'January 2025',
         level: 'Professional',
         icon: 'design_services',
         colorClass: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400',
