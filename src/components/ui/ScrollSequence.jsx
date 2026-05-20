@@ -32,25 +32,52 @@ const ScrollSequence = ({
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d", { alpha: false }); // Optimize canvas for opaque images
         
-        // 1. Preload Images simply
+        // 1. Progressive Image Preloader
         const images = [];
-        for (let i = 1; i <= frameCount; i++) {
-            const img = new Image();
-            const paddedIndex = String(i).padStart(padZeros, '0');
-            img.src = `${folderPath}/${imagePrefix}${paddedIndex}${imageSuffix}`;
-            images.push(img);
-        }
-
+        const criticalFrames = 15;
         let cachedScale = 0;
         let cachedX = 0;
         let cachedY = 0;
         let cachedW = 0;
         let cachedH = 0;
 
+        // Initialize all Image objects
+        for (let i = 1; i <= frameCount; i++) {
+            const img = new Image();
+            images.push(img);
+        }
+
+        // Helper to load a specific frame
+        const loadFrame = (index) => {
+            if (index < 0 || index >= frameCount) return Promise.resolve(null);
+            const img = images[index];
+            if (img.src) return Promise.resolve(img); // Already loading or loaded
+            
+            return new Promise((resolve) => {
+                const paddedIndex = String(index + 1).padStart(padZeros, '0');
+                img.onload = () => {
+                    // If this was the current frame, force a redraw
+                    const currentFrame = Math.round(frames.current);
+                    if (currentFrame === index) {
+                        renderFrame(index);
+                    }
+                    resolve(img);
+                };
+                img.onerror = () => resolve(null);
+                img.src = `${folderPath}/${imagePrefix}${paddedIndex}${imageSuffix}`;
+            });
+        };
+
         // 2. Simple Render Function
         const renderFrame = (index) => {
             const img = images[index];
-            if (!img || !img.complete || img.naturalHeight === 0) return;
+            if (!img) return;
+            
+            // If the frame isn't loaded yet, try to load it on-demand
+            if (!img.complete || img.naturalHeight === 0) {
+                loadFrame(index);
+                return;
+            }
 
             // Compute scaling metrics only once per resize
             if (cachedScale === 0) {
@@ -69,7 +96,7 @@ const ScrollSequence = ({
         let lastRenderedFrame = -1;
 
         const handleResize = () => {
-             // Use full resolution for crispness, modern devices can handle it if we don't over-engineer JS
+             // Use full resolution for crispness
              canvas.width = window.innerWidth;
              canvas.height = window.innerHeight;
              // Reset cache
@@ -81,22 +108,56 @@ const ScrollSequence = ({
         window.addEventListener("resize", handleResize);
         handleResize();
 
-        // Ensure first frame renders
-        if (images.length > 0) {
-            const loadFirstFrame = () => {
-                renderFrame(0);
-                if (fallbackImgRef.current) {
-                    gsap.to(fallbackImgRef.current, { autoAlpha: 0, duration: 0.5, ease: "power1.out" });
+        // Load critical frames first
+        const loadCritical = async () => {
+            const promises = [];
+            for (let i = 0; i < Math.min(criticalFrames, frameCount); i++) {
+                promises.push(loadFrame(i));
+            }
+            await Promise.all(promises);
+
+            // Ensure first frame renders
+            renderFrame(0);
+            if (fallbackImgRef.current) {
+                gsap.to(fallbackImgRef.current, { autoAlpha: 0, duration: 0.5, ease: "power1.out" });
+            }
+
+            // Delay loading the rest until after window loads or a timeout (to prevent network contention)
+            const startRemainingLoad = () => {
+                const batchSize = 6;
+                let currentIndex = criticalFrames;
+
+                const loadNextBatch = async () => {
+                    if (currentIndex >= frameCount) return;
+                    const batchPromises = [];
+                    for (let i = 0; i < batchSize && currentIndex < frameCount; i++) {
+                        batchPromises.push(loadFrame(currentIndex));
+                        currentIndex++;
+                    }
+                    await Promise.all(batchPromises);
+                    
+                    if (typeof requestIdleCallback === 'function') {
+                        requestIdleCallback(() => loadNextBatch());
+                    } else {
+                        setTimeout(loadNextBatch, 50);
+                    }
+                };
+
+                if (typeof requestIdleCallback === 'function') {
+                    requestIdleCallback(() => loadNextBatch());
+                } else {
+                    setTimeout(loadNextBatch, 100);
                 }
             };
-            
-            if (images[0].complete) {
-                // In case it's already cached and loaded
-                loadFirstFrame();
+
+            if (document.readyState === 'complete') {
+                startRemainingLoad();
             } else {
-                images[0].onload = loadFirstFrame;
+                window.addEventListener('load', startRemainingLoad, { once: true });
             }
-        }
+        };
+
+        loadCritical();
 
         // 4. Create a single, clean GSAP Timeline for EVERYTHING
         const tl = gsap.timeline({

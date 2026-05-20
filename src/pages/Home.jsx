@@ -158,7 +158,7 @@ const Home = () => {
                     folderPath="/sequence"
                     frameCount={240}
                     imagePrefix="frame_"
-                    imageSuffix=".jpg"
+                    imageSuffix=".webp"
                     padZeros={4}
                     sequences={homeSequences}
                 />

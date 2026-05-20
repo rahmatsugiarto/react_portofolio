@@ -105,7 +105,7 @@ const LoadingScreen = ({ onLoadingComplete }) => {
         for (let i = 1; i <= criticalFrameCount; i++) {
             const img = new Image();
             const paddedIndex = String(i).padStart(4, '0');
-            img.src = `/sequence/frame_${paddedIndex}.jpg`;
+            img.src = `/sequence/frame_${paddedIndex}.webp`;
 
             if (img.complete) {
                 updateProgress();
