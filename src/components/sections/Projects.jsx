@@ -44,6 +44,7 @@ const Projects = () => {
 
     return (
         <section id="projects" className="overflow-hidden bg-background-light dark:bg-background-dark">
+            <h2 className="sr-only">Featured Projects</h2>
             <div ref={triggerRef}>
                 <div ref={sectionRef} className="h-screen w-[400vw] flex flex-row relative">
                     

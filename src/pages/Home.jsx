@@ -115,8 +115,41 @@ const Home = () => {
         <div className="bg-background-light dark:bg-background-dark min-h-screen">
             <Helmet>
                 <title>Rahmat Sugiarto | Mobile Developer</title>
-                <meta name="description" content="Portfolio of Rahmat Sugiarto, an experienced Mobile Developer." />
+                <meta name="description" content="Portfolio profesional Rahmat Sugiarto, Flutter & Mobile Developer berpengalaman berbasis di Indonesia. Temukan aplikasi Android/iOS yang telah saya bangun." />
                 <link rel="canonical" href="https://rahmatsugiarto.vercel.app/" />
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Person",
+                        "name": "Rahmat Sugiarto",
+                        "jobTitle": "Mobile Developer",
+                        "url": "https://rahmatsugiarto.vercel.app/",
+                        "sameAs": [
+                            "https://github.com/rahmatsugiarto",
+                            "https://www.linkedin.com/in/rahmat-sugiarto/"
+                        ],
+                        "knowsAbout": [
+                            "Flutter",
+                            "Dart",
+                            "Kotlin",
+                            "Java",
+                            "Android Development",
+                            "iOS Development",
+                            "Firebase",
+                            "Mobile App Development",
+                            "Clean Architecture",
+                            "BLoC State Management"
+                        ],
+                        "worksFor": {
+                            "@type": "Organization",
+                            "name": "TelkomSigma"
+                        },
+                        "alumniOf": {
+                            "@type": "EducationalOrganization",
+                            "name": "Asia Cyber University"
+                        }
+                    })}
+                </script>
             </Helmet>
 
             {/* Hero Section */}

@@ -26,7 +26,7 @@ const Education = () => {
     return (
         <section id="education" ref={containerRef} className="py-24 bg-background-light dark:bg-background-dark">
             <div className="max-w-7xl mx-auto px-6">
-                <span className="text-primary font-bold tracking-widest text-sm uppercase block mb-12">Education</span>
+                <h2 className="text-primary font-bold tracking-widest text-sm uppercase block mb-12">Education</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     <div className="education-item">

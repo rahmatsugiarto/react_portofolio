@@ -89,7 +89,7 @@ const CertificationsPage = () => {
                                         <span className={`px-2 py-1 ${cert.colorClass} text-xs font-semibold rounded`}>{cert.year}</span>
                                     </div>
                                 </div>
-                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">{cert.title}</h3>
+                                <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">{cert.title}</h2>
                                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{cert.issuer}</p>
                                 <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
                                     <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">{cert.level}</span>

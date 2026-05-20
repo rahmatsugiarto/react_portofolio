@@ -50,7 +50,7 @@ const Experience = () => {
     return (
         <section id="experience" ref={containerRef} className="py-32 bg-background-light dark:bg-background-dark">
             <div className="max-w-7xl mx-auto px-6">
-                <span className="text-primary font-bold tracking-widest text-sm uppercase block mb-16">Experience</span>
+                <h2 className="text-primary font-bold tracking-widest text-sm uppercase block mb-16">Experience</h2>
                 
                 <div className="flex flex-col border-t border-gray-200 dark:border-gray-800">
                     {experiences.map((exp, index) => (

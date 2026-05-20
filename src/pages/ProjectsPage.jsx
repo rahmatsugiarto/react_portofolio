@@ -115,9 +115,9 @@ const ProjectsPage = () => {
                                         — {project.year}
                                     </span>
                                 </div>
-                                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 tracking-tight">
+                                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 tracking-tight">
                                     {project.title}
-                                </h3>
+                                </h2>
                                 <p className="text-gray-600 dark:text-gray-400 max-w-sm mb-6 text-sm leading-relaxed">
                                     {project.description}
                                 </p>
